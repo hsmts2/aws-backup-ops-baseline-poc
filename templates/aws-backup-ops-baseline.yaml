@@ -23,8 +23,6 @@ Metadata:
         Parameters:
           - BackupTargetTagKey
           - BackupTargetTagValue
-          - BackupSkipTagKey
-          - BackupSkipTagValue
       - Label:
           default: Notifications
         Parameters:
@@ -107,20 +105,6 @@ Parameters:
     MinLength: 1
     MaxLength: 256
     Description: Tag value used to select backup target resources.
-
-  BackupSkipTagKey:
-    Type: String
-    Default: BackupSkip
-    MinLength: 1
-    MaxLength: 128
-    Description: Tag key used to explicitly exclude resources from backup selection.
-
-  BackupSkipTagValue:
-    Type: String
-    Default: 'true'
-    MinLength: 1
-    MaxLength: 256
-    Description: Tag value used to explicitly exclude resources from backup selection.
 
   EnableEventBridgeFailureRule:
     Type: String
@@ -351,9 +335,6 @@ Resources:
           StringEquals:
             - ConditionKey: !Sub aws:ResourceTag/${BackupTargetTagKey}
               ConditionValue: !Ref BackupTargetTagValue
-          StringNotEquals:
-            - ConditionKey: !Sub aws:ResourceTag/${BackupSkipTagKey}
-              ConditionValue: !Ref BackupSkipTagValue
 
   BackupFailureEventRule:
     Type: AWS::Events::Rule
@@ -411,7 +392,3 @@ Outputs:
   BackupTargetTag:
     Description: Tag condition for backup target resources.
     Value: !Sub ${BackupTargetTagKey}=${BackupTargetTagValue}
-
-  BackupSkipTag:
-    Description: Tag condition used to exclude resources from backup selection.
-    Value: !Sub ${BackupSkipTagKey}=${BackupSkipTagValue}

@@ -95,8 +95,6 @@ cp parameters/aws-backup-ops-baseline.example.json parameters/aws-backup-ops-bas
 | `EnableContinuousBackup` | `false` | 対応リソースで継続的バックアップを有効にするか |
 | `BackupTargetTagKey` | `Backup` | バックアップ対象を選択するタグキー |
 | `BackupTargetTagValue` | `true` | バックアップ対象を選択するタグ値 |
-| `BackupSkipTagKey` | `BackupSkip` | バックアップ対象から明示的に除外するタグキー |
-| `BackupSkipTagValue` | `true` | バックアップ対象から明示的に除外するタグ値 |
 | `NotificationEmail` | 空 | SNS のメール通知先 |
 | `CreateEmailSubscription` | `false` | SNS メール購読を作成するか |
 | `EnableEventBridgeFailureRule` | `true` | 失敗系イベントを EventBridge で通知するか |
@@ -116,6 +114,7 @@ cp parameters/aws-backup-ops-baseline.example.json parameters/aws-backup-ops-bas
 ├── README.md
 ├── docs
 │   ├── architecture.md
+│   ├── best-practices.md
 │   ├── notifications.md
 │   ├── operations.md
 │   └── restore-guide.md
@@ -180,13 +179,7 @@ aws cloudformation create-stack \
 
 タグを付与したリソースは、次回のバックアップスケジュールから AWS Backup の対象になります。
 
-一時的にバックアップ対象から除外したい場合は、以下のタグを追加します。
-
-| キー | 値 |
-| --- | --- |
-| `BackupSkip` | `true` |
-
-この構成では、`Backup=true` が付いていても `BackupSkip=true` が付いているリソースはバックアップ対象から除外します。
+バックアップ対象外にしたいリソースには、このタグを付与しません。
 
 ### 通知確認
 
@@ -210,6 +203,7 @@ Backup Vault に復旧ポイントが残っている場合、Backup Vault は削
 | ドキュメント | 内容 |
 | --- | --- |
 | [docs/architecture.md](docs/architecture.md) | 構成、作成リソース、設計方針 |
+| [docs/best-practices.md](docs/best-practices.md) | バックアップ運用の設計ポイント |
 | [docs/notifications.md](docs/notifications.md) | バックアップ通知方式 |
 | [docs/operations.md](docs/operations.md) | 運用時の確認ポイント |
 | [docs/restore-guide.md](docs/restore-guide.md) | 復旧確認手順 |
